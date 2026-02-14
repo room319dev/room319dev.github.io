@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💝 Will You Be My Valentine?</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #ffdde1 0%, #ffb3c1 50%, #ff8fa3 100%);
+            overflow: hidden;
+        }
+
+        /* Floating hearts background */
+        .heart-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            opacity: 0.3;
+            animation: float 15s infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            50% {
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* Page 1: Question */
+        #page1 {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .profile-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 5px solid white;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            object-fit: cover;
+            background: white;
+        }
+
+        h1 {
+            font-size: 3em;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            margin: 0;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+            align-items: center;
+            justify-content: center;
+            min-height: 100px;
+        }
+
+        button {
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        #yesBtn {
+            background: linear-gradient(135deg, #ff6b9d 0%, #ff1744 100%);
+            color: white;
+        }
+
+        #yesBtn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(255, 23, 68, 0.4);
+        }
+
+        #noBtn {
+            background: white;
+            color: #ff6b9d;
+        }
+
+        #noBtn:hover {
+            background: #f5f5f5;
+        }
+
+        /* Page 2: Yes response */
+        #page2 {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+
+        #page2 h1 {
+            font-size: 3.5em;
+            animation: fadeIn 1s ease;
+        }
+
+        #page2 img {
+            max-width: 400px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 1.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Page 3: Password */
+        #page3 {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            max-width: 400px;
+        }
+
+        .password-box {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .password-box h2 {
+            color: #ff6b9d;
+            margin-bottom: 10px;
+        }
+
+        .hint {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        input[type="password"] {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.1em;
+            border: 2px solid #ffb3c1;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            letter-spacing: 3px;
+        }
+
+        input[type="password"]:focus {
+            outline: none;
+            border-color: #ff6b9d;
+        }
+
+        .error {
+            color: #ff1744;
+            font-size: 0.9em;
+            display: none;
+        }
+
+        /* Page 4: Love Letter */
+        #page4 {
+            display: none;
+            perspective: 1000px;
+        }
+
+        .letter-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .letter {
+            background: #fff9f0;
+            padding: 50px 40px;
+            border-radius: 10px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+            position: relative;
+            border: 1px solid #e8d7c3;
+            animation: unfold 1s ease;
+            line-height: 1.8;
+        }
+
+        @keyframes unfold {
+            from { 
+                transform: rotateX(-90deg);
+                opacity: 0;
+            }
+            to { 
+                transform: rotateX(0deg);
+                opacity: 1;
+            }
+        }
+
+        .letter::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #ff6b9d, transparent);
+        }
+
+        .letter-header {
+            text-align: right;
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+
+        .letter-content {
+            color: #333;
+            font-size: 1.1em;
+            text-align: left;
+        }
+
+        .letter-content p {
+            margin-bottom: 20px;
+        }
+
+        .letter-signature {
+            text-align: right;
+            margin-top: 40px;
+            font-family: 'Brush Script MT', cursive;
+            font-size: 1.3em;
+            color: #ff6b9d;
+        }
+
+        .stamp {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            border: 3px solid #ff6b9d;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            transform: rotate(15deg);
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2em; }
+            .profile-image { width: 150px; height: 150px; }
+            button { padding: 12px 30px; font-size: 1em; }
+            .letter { padding: 30px 20px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating hearts background -->
+    <div class="heart-bg" id="heartBg"></div>
+
+    <div class="container">
+        <!-- Page 1: Question -->
+        <div id="page1">
+            <img src="unnamed.jpg" alt="Profile" class="profile-image">
+            <h1>Will You Be My Valentine?</h1>
+            <div class="button-container">
+                <button id="yesBtn">Yes! 💕</button>
+                <button id="noBtn">No</button>
+            </div>
+        </div>
+
+        <!-- Page 2: Yes Response -->
+        <div id="page2">
+            <h1>I always knew it :)</h1>
+            <img src="123.gif" alt="Happy celebration">
+            <button id="continueBtn" style="background: linear-gradient(135deg, #ff6b9d 0%, #ff1744 100%); color: white; margin-top: 20px;">
+                Continue 💌
+            </button>
+        </div>
+
+        <!-- Page 3: Password -->
+        <div id="page3">
+            <div class="password-box">
+                <h2>🔒 One More Thing...</h2>
+                <p class="hint">Hint: my phone password</p>
+                <input type="password" id="passwordInput" placeholder="Enter password" maxlength="6">
+                <p class="error" id="errorMsg">❌ Try again!</p>
+                <button id="submitBtn" style="width: 100%; background: linear-gradient(135deg, #ff6b9d 0%, #ff1744 100%); color: white;">
+                    Unlock 💌
+                </button>
+            </div>
+        </div>
+
+        <!-- Page 4: Love Letter -->
+        <div id="page4">
+            <div class="letter-container">
+                <div class="letter">
+                    <div class="stamp">💕</div>
+                    <div class="letter-header">
+                        Valentine's Day, 2026
+                    </div>
+                    <div class="letter-content">
+                        <p>My Dearest cutie patooti,</p>
+                        
+                        <p>I'm writing this as we're sitting together at AV making valentine's day gifts for others. AV kinda ruined my surprise for you by leaking it but I also messed up putting the website coz you'd recognize it instantly. Anyway you're still happy so I'm happy.</p>
+                        
+                        <p>I ordered the gift the day it came out and then acted like I didn't care about valentine's day so that you would be max surprised when it happened.</p>
+                        
+                        <p>Anyway moving on from that, we've had a very amazing year since the last time I got you roses. We've had a lot of good times (we went on a few trips, grew as a couple and much more), we also had a few bad times, and more importantly we worked through those bad times and I'm genuinely proud of ourselves.</p>
+                        
+                        <p>You make me happy every single day and some things genuinely would not be the same without you. I plan to do a 1000 different things and each one of them would not go how I wanted if you aren't there.</p>
+                        
+                        <p>You make me a better person each day and I'm super grateful to you bbg.</p>
+                    </div>
+                    <div class="letter-signature">
+                        Forever Yours ♡
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create floating hearts
+        const heartBg = document.getElementById('heartBg');
+        for (let i = 0; i < 15; i++) {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.textContent = '❤️';
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDelay = Math.random() * 15 + 's';
+            heart.style.animationDuration = (15 + Math.random() * 10) + 's';
+            heartBg.appendChild(heart);
+        }
+
+        // Page 1: Yes/No buttons
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        let noClickCount = 0;
+
+        noBtn.addEventListener('click', () => {
+            noClickCount++;
+            
+            // Shrink no button
+            const newSize = Math.max(0.3, 1 - (noClickCount * 0.15));
+            noBtn.style.transform = `scale(${newSize})`;
+            
+            // Grow yes button
+            const yesSize = 1 + (noClickCount * 0.2);
+            yesBtn.style.transform = `scale(${yesSize})`;
+            
+            // Move no button randomly
+            const randomX = (Math.random() - 0.5) * 100;
+            const randomY = (Math.random() - 0.5) * 50;
+            noBtn.style.position = 'relative';
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+        });
+
+        yesBtn.addEventListener('click', () => {
+            document.getElementById('page1').style.display = 'none';
+            document.getElementById('page2').style.display = 'flex';
+        });
+
+        // Page 2: Continue button
+        const continueBtn = document.getElementById('continueBtn');
+        continueBtn.addEventListener('click', () => {
+            document.getElementById('page2').style.display = 'none';
+            document.getElementById('page3').style.display = 'flex';
+        });
+
+        // Page 3: Password
+        const passwordInput = document.getElementById('passwordInput');
+        const submitBtn = document.getElementById('submitBtn');
+        const errorMsg = document.getElementById('errorMsg');
+
+        function checkPassword() {
+            const password = passwordInput.value;
+            if (password === '080777') {
+                document.getElementById('page3').style.display = 'none';
+                document.getElementById('page4').style.display = 'block';
+            } else {
+                errorMsg.style.display = 'block';
+                passwordInput.value = '';
+                passwordInput.style.borderColor = '#ff1744';
+                
+                setTimeout(() => {
+                    errorMsg.style.display = 'none';
+                    passwordInput.style.borderColor = '#ffb3c1';
+                }, 2000);
+            }
+        }
+
+        submitBtn.addEventListener('click', checkPassword);
+        
+        passwordInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+    </script>
+</body>
+</html>
